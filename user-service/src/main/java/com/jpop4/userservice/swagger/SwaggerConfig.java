@@ -16,7 +16,6 @@ import java.util.Collections;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    @Bean
     public Docket apiDocket() {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()

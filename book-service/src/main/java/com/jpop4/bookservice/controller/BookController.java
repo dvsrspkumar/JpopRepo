@@ -1,9 +1,11 @@
 package com.jpop4.bookservice.controller;
 
 import com.jpop4.bookservice.model.Book;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -11,9 +13,16 @@ import java.util.List;
 @RefreshScope
 public class BookController {
 
+    @HystrixCommand(fallbackMethod = "getBooksFallback")
     @GetMapping
     public List<Book> getBooks() {
-        return null;
+        Book book = new Book(101,"Java","Technology","Gosling","Java Publishers");
+        return Collections.singletonList(book);
+    }
+
+    private List<Book> getBooksFallback() {
+        Book book = new Book(101,"Java","Technology","Gosling","Java Publishers");
+        return Collections.singletonList(book);
     }
 
     @GetMapping("/{bookId}")
